@@ -5,6 +5,7 @@ go 1.21
 toolchain go1.22.5
 
 require (
+	github.com/antithesishq/antithesis-sdk-go v0.4.2
 	github.com/google/uuid v1.6.0
 	github.com/stretchr/testify v1.9.0
 	github.com/urfave/cli/v2 v2.3.0

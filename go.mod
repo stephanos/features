@@ -12,9 +12,11 @@ require (
 	github.com/urfave/cli/v2 v2.25.7
 	go.temporal.io/sdk v1.29.1
 	golang.org/x/mod v0.17.0
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
+	github.com/antithesishq/antithesis-sdk-go v0.4.2 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/facebookgo/clock v0.0.0-20150410010913-600d898af40a // indirect
@@ -46,7 +48,6 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240822170219-fc7c04adadcd // indirect
 	google.golang.org/grpc v1.65.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 replace (
