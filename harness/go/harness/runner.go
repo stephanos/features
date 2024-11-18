@@ -114,7 +114,7 @@ func NewRunner(config RunnerConfig, feature *PreparedFeature) (*Runner, error) {
 func (r *Runner) Run(ctx context.Context) error {
 	defer r.Close()
 
-	antiassert.Sometimes(true, "[wkl] Features test", map[string]any{"feature": r.Feature.Dir})
+	antiassert.Sometimes(true, "[WKL] Features test", map[string]any{"feature": r.Feature.Dir})
 
 	// Do normal run
 	r.Log.Debug("Executing feature", "Feature", r.Feature.Dir)
@@ -127,7 +127,7 @@ func (r *Runner) Run(ctx context.Context) error {
 	}
 	// Bail if there is an error or no run
 	if run == nil || err != nil {
-		antiassert.Unreachable("[wkl] Features test start failed", map[string]any{"feature": r.Feature.Dir})
+		antiassert.Unreachable("[WKL] Features test start failed", map[string]any{"feature": r.Feature.Dir})
 		return err
 	}
 
@@ -139,7 +139,7 @@ func (r *Runner) Run(ctx context.Context) error {
 		err = r.CheckResultDefault(ctx, run)
 	}
 	if err != nil {
-		antiassert.Unreachable("[wkl] Features test result check failed", map[string]any{"error": err})
+		antiassert.Unreachable("[WKL] Features test result check failed", map[string]any{"error": err})
 		return err
 	}
 
@@ -151,7 +151,7 @@ func (r *Runner) Run(ctx context.Context) error {
 		err = r.CheckHistoryDefault(ctx, run)
 	}
 	if err != nil {
-		antiassert.Unreachable("[wkl] Features test history check failed", map[string]any{"error": err})
+		antiassert.Unreachable("[WKL] Features test history check failed", map[string]any{"error": err})
 	}
 	return err
 }
