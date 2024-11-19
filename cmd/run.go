@@ -153,7 +153,7 @@ func NewRunner(config RunConfig) *Runner {
 // given).
 func (r *Runner) Run(ctx context.Context, patterns []string) (retErr error) {
 	defer func() {
-		assert.Always(retErr == nil, "[WKL] Feature runner failed", map[string]any{"err": retErr})
+		assert.Always(retErr == nil, "[WKL] Feature runner succeeded", map[string]any{"err": retErr})
 	}()
 
 	var err error
