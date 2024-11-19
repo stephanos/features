@@ -13,11 +13,14 @@ import (
 	commonpb "go.temporal.io/api/common/v1"
 	enumspb "go.temporal.io/api/enums/v1"
 	historypb "go.temporal.io/api/history/v1"
+	"go.temporal.io/api/serviceerror"
+	"go.temporal.io/api/workflowservice/v1"
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/log"
 	"go.temporal.io/sdk/temporal"
 	"go.temporal.io/sdk/worker"
 	"go.temporal.io/sdk/workflow"
+	"google.golang.org/protobuf/types/known/durationpb"
 )
 
 // RetryDisabled is a retry policy with 1 max attempt.
@@ -142,6 +145,21 @@ func WaitNamespaceAvailable(ctx context.Context, logger log.Logger,
 	tlsCfg, err := LoadTLSConfig(clientCertPath, clientKeyPath)
 	clientOpts := client.Options{HostPort: hostPortStr, Namespace: namespace, Logger: logger}
 	clientOpts.ConnectionOptions.TLS = tlsCfg
+
+	nsclient, err := client.NewNamespaceClient(clientOpts)
+	if err != nil {
+		panic(err)
+	}
+	err = nsclient.Register(context.Background(), &workflowservice.RegisterNamespaceRequest{
+		Namespace:                        namespace,
+		WorkflowExecutionRetentionPeriod: durationpb.New(1 * 24 * time.Hour),
+	})
+	if err != nil {
+		if _, ok := err.(*serviceerror.NamespaceAlreadyExists); !ok {
+			panic(err)
+		}
+	}
+
 	if err != nil {
 		return err
 	}

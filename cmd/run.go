@@ -17,6 +17,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/antithesishq/antithesis-sdk-go/assert"
 	"github.com/google/uuid"
 	"github.com/pmezard/go-difflib/difflib"
 	"github.com/temporalio/features/harness/go/cmd"
@@ -150,7 +151,13 @@ func NewRunner(config RunConfig) *Runner {
 
 // Run runs all matching features for the given patterns (or all if no patterns
 // given).
-func (r *Runner) Run(ctx context.Context, patterns []string) error {
+func (r *Runner) Run(ctx context.Context, patterns []string) (retErr error) {
+	defer func() {
+		if retErr != nil {
+			assert.Unreachable("[WKL] Feature runner failed", map[string]any{"err": retErr.Error()})
+		}
+	}()
+
 	var err error
 	if r.config.Lang, err = normalizeLangName(r.config.Lang); err != nil {
 		return err
@@ -289,6 +296,7 @@ func (r *Runner) Run(ctx context.Context, patterns []string) error {
 				err = r.RunGoExternal(ctx, run)
 			}
 		} else {
+			assert.Sometimes(true, "[WKL] Feature runner", map[string]any{})
 			err = cmd.NewRunner(cmd.RunConfig{
 				Server:         r.config.Server,
 				Namespace:      r.config.Namespace,
