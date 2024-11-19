@@ -23,8 +23,8 @@ func Execute() {
 		err = newApp().Run(os.Args)
 	}
 
+	antiassert.Always(err == nil, "[WKL] Features run failed", map[string]any{"err": err})
 	if err != nil {
-		antiassert.Unreachable("[WKL] Features run failed", map[string]any{"err": err.Error()})
 		log.Fatal(err)
 	}
 }

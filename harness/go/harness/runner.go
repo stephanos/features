@@ -126,8 +126,9 @@ func (r *Runner) Run(ctx context.Context) error {
 		run, err = r.ExecuteDefault(ctx)
 	}
 	// Bail if there is an error or no run
+	antiassert.Always(run == nil || err != nil, "[WKL] Features test start failed",
+		map[string]any{"feature": r.Feature.Dir, "err": err})
 	if run == nil || err != nil {
-		antiassert.Unreachable("[WKL] Features test start failed", map[string]any{"feature": r.Feature.Dir})
 		return err
 	}
 
@@ -138,8 +139,8 @@ func (r *Runner) Run(ctx context.Context) error {
 	} else {
 		err = r.CheckResultDefault(ctx, run)
 	}
+	antiassert.Always(err == nil, "[WKL] Features test result check failed", map[string]any{"error": err})
 	if err != nil {
-		antiassert.Unreachable("[WKL] Features test result check failed", map[string]any{"error": err.Error()})
 		return err
 	}
 
@@ -150,9 +151,7 @@ func (r *Runner) Run(ctx context.Context) error {
 	} else {
 		err = r.CheckHistoryDefault(ctx, run)
 	}
-	if err != nil {
-		antiassert.Unreachable("[WKL] Features test history check failed", map[string]any{"error": err.Error()})
-	}
+	antiassert.Always(err == nil, "[WKL] Features test history check failed", map[string]any{"error": err})
 	return err
 }
 
