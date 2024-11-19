@@ -139,7 +139,7 @@ func (r *Runner) Run(ctx context.Context) error {
 		err = r.CheckResultDefault(ctx, run)
 	}
 	if err != nil {
-		antiassert.Unreachable("[WKL] Features test result check failed", map[string]any{"error": err})
+		antiassert.Unreachable("[WKL] Features test result check failed", map[string]any{"error": err.Error()})
 		return err
 	}
 
@@ -151,7 +151,7 @@ func (r *Runner) Run(ctx context.Context) error {
 		err = r.CheckHistoryDefault(ctx, run)
 	}
 	if err != nil {
-		antiassert.Unreachable("[WKL] Features test history check failed", map[string]any{"error": err})
+		antiassert.Unreachable("[WKL] Features test history check failed", map[string]any{"error": err.Error()})
 	}
 	return err
 }

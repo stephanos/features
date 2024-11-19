@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	antiassert "github.com/antithesishq/antithesis-sdk-go/assert"
 	"github.com/temporalio/features/harness/go/harness"
 	"github.com/urfave/cli/v2"
 )
@@ -11,6 +12,8 @@ import (
 // Execute executes the app using CLI arguments.
 func Execute() {
 	var err error
+
+	antiassert.Sometimes(true, "[WKL] Features run", map[string]any{})
 
 	// If the second arg is "go-subprocess", remove that part and run subprocess
 	// app
@@ -21,6 +24,7 @@ func Execute() {
 	}
 
 	if err != nil {
+		antiassert.Unreachable("[WKL] Features run failed", map[string]any{"err": err.Error()})
 		log.Fatal(err)
 	}
 }
