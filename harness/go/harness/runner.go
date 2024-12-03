@@ -113,6 +113,10 @@ func NewRunner(config RunnerConfig, feature *PreparedFeature) (*Runner, error) {
 // Run executes a single feature and then closes the worker/client.
 func (r *Runner) Run(ctx context.Context) error {
 	defer r.Close()
+	defer func() {
+		var err = recover()
+		antiassert.Always(err == nil, "[WKL] Features test did not crash", map[string]any{"err": err})
+	}()
 
 	antiassert.Sometimes(true, "[WKL] Features test", map[string]any{"feature": r.Feature.Dir})
 
