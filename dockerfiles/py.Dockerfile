@@ -3,9 +3,9 @@ FROM python:3.11-bullseye as build
 
 # Install protobuf compiler
 RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive \
+    && DEBIAN_FRONTEND=noninteractive \
     apt-get install --no-install-recommends --assume-yes \
-      protobuf-compiler=3.12.4* libprotobuf-dev=3.12.4*
+    protobuf-compiler=3.12.4* libprotobuf-dev=3.12.4*
 
 # Get go compiler
 ARG PLATFORM=amd64
@@ -31,6 +31,7 @@ COPY cmd ./cmd
 COPY go.mod go.sum main.go ./
 
 # Build the CLI
+RUN /usr/local/go/bin/go mod tidy
 RUN CGO_ENABLED=0 /usr/local/go/bin/go build -o temporal-features
 
 COPY uv.lock pyproject.toml ./
